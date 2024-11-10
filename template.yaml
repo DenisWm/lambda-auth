@@ -1,0 +1,31 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  authenticate-pedido
+
+  Sample SAM Template for authenticate-pedido
+
+
+Globals:
+  Function:
+    Timeout: 3
+
+Resources:
+  IdentifyUserFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: authenticate/
+      Handler: identify_user.handler
+      Role: arn:aws:iam::553498133952:role/RedshiftRole
+      Runtime: python3.12
+      Environment:
+        Variables:
+          USER_POOL_ID: "us-east-1_68Q4999la" 
+      Policies:
+        - AmazonCognitoReadOnly  
+      Events:
+        ApiEvent:
+          Type: Api
+          Properties:
+            Path: /identify
+            Method: post
