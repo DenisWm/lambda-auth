@@ -6,7 +6,8 @@ services:
       - "4566:4566"
       - "4510-4559:4510-4559"
     environment:
-      - SERVICES=cognito,sqs,lambda,iam
+      - SERVICES=cognito-idp,sqs,lambda,iam
       - DEFAULT_REGION=us-east-1
       - AWS_ACCESS_KEY_ID=test
       - AWS_SECRET_ACCESS_KEY=test
+      - LOCALSTACK_AUTH_TOKEN=ls-ZoquxOxE-tOxA-9537-hOgu-9719wiSa9859
