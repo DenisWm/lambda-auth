@@ -23,6 +23,12 @@ jobs:
           AWS_DEFAULT_REGION: us-east-1
           AWS_ACCESS_KEY_ID: test
           AWS_SECRET_ACCESS_KEY: test
+          
+  env: 
+      AWS_ACCESS_KEY_ID: "test"
+      AWS_SECRET_ACCESS_KEY: "test"
+      AWS_REGION: "us-east-1"
+      AWS_DEFAULT_REGION: "us-east-1"
 
     steps:
       - name: Checkout Repositório
@@ -57,5 +63,3 @@ jobs:
             --role arn:aws:iam::000000000000:role/lambda-ex \
             --handler lambda_function.lambda_handler \
             --zip-file fileb://lambda.zip
-        env:
-          AWS_DEFAULT_REGION: us-east-1
