@@ -52,7 +52,7 @@ jobs:
           aws-secret-access-key: "test"  # LocalStack usa essas credenciais fictícias
           aws-region: us-east-1
           aws-session-token: "null"  # Remover token ou passar "null"
-
+          
         run: |
           zip lambda.zip lambda/lambda_function.py
           aws --endpoint-url=http://localhost:4566 lambda create-function \
