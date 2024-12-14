@@ -20,6 +20,9 @@ jobs:
           DEBUG: "1"
           DATA_DIR: "/tmp/localstack/data"
           LOCALSTACK_AUTH_TOKEN: ${{ secrets.LOCALSTACK_AUTH_TOKEN }}
+          DEFAULT_REGION: us-east-1
+          AWS_ACCESS_KEY_ID: test
+          AWS_SECRET_ACCESS_KEY: test
 
     steps:
       - name: Checkout Repositório
@@ -44,13 +47,6 @@ jobs:
         working-directory: ./infrastructure
         run: |
           terraform apply -auto-approve
-      - name: Configurar Credenciais AWS
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: "test"  # LocalStack usa essas credenciais fictícias
-          aws-secret-access-key: "test"  # LocalStack usa essas credenciais fictícias
-          aws-region: us-east-1
-          aws-session-token: "asdasfgagrg3"  # Remover token ou passar "null"
 
       - name: Deploy Lambda
         run: |
