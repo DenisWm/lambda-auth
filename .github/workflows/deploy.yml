@@ -16,10 +16,10 @@ jobs:
           - 4566:4566
           - 4510-4559:4510-4559
         env:
-          SERVICES: "lambda,cognito-idp,iam"
+          SERVICES: "cognito-idp,sqs,lambda,iam"
           DEBUG: "1"
           DATA_DIR: "/tmp/localstack/data"
-          LOCALSTACK_AUTH_TOKEN: ${{secrets.LOCALSTACK_AUTH_TOKEN}}
+          LOCALSTACK_AUTH_TOKEN: ${{ secrets.LOCALSTACK_AUTH_TOKEN }}
 
     steps:
       - name: Checkout Repositório
