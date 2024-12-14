@@ -45,13 +45,7 @@ jobs:
         run: |
           terraform apply -auto-approve
 
-      - name: Configurar Credenciais AWS
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: "test"
-          aws-secret-access-key: "test"
-          aws-region: us-east-1
-
+    
       - name: Deploy Lambda
         run: |
           zip lambda.zip lambda/lambda_function.py
