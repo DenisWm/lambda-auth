@@ -44,10 +44,14 @@ jobs:
         working-directory: ./infrastructure
         run: |
           terraform apply -auto-approve
-      - name: Set up AWS credentials
+
+      - name: Configurar Credenciais AWS
         uses: aws-actions/configure-aws-credentials@v1
         with:
+          aws-access-key-id: "test"
+          aws-secret-access-key: "test"
           aws-region: us-east-1
+          aws-session-token: "null"
 
       - name: Deploy Lambda
         run: |
