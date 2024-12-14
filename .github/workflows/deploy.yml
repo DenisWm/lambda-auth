@@ -54,4 +54,5 @@ jobs:
             --runtime python3.9 \
             --role arn:aws:iam::000000000000:role/lambda-ex \
             --handler lambda_function.lambda_handler \
-            --zip-file fileb://lambda.zip
+            --zip-file fileb://lambda.zip \
+            --region us-west-1
