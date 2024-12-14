@@ -1,0 +1,12 @@
+version: '3'
+services:
+  localstack:
+    image: localstack/localstack-pro
+    ports:
+      - "4566:4566"
+      - "4510-4559:4510-4559"
+    environment:
+      - SERVICES=cognito,sqs,lambda,iam
+      - DEFAULT_REGION=us-east-1
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
