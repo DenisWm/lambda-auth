@@ -44,7 +44,6 @@ jobs:
         working-directory: ./infrastructure
         run: |
           terraform apply -auto-approve
-
       - name: Configurar Credenciais AWS
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -53,6 +52,7 @@ jobs:
           aws-region: us-east-1
           aws-session-token: "null"  # Remover token ou passar "null"
           
+      - name: Deploy Lambda
         run: |
           zip lambda.zip lambda/lambda_function.py
           aws --endpoint-url=http://localhost:4566 lambda create-function \
@@ -61,4 +61,3 @@ jobs:
             --role arn:aws:iam::000000000000:role/lambda-ex \
             --handler lambda_function.lambda_handler \
             --zip-file fileb://lambda.zip
-            --region us-west-1
