@@ -1,0 +1,65 @@
+name: Deploy to LocalStack
+
+on: 
+  push:
+    branches: 
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    services:
+      localstack:
+        image: localstack/localstack:latest
+        ports: 
+          - 4566:4566
+          - 4510-4559:4510-4559
+        env:
+          SERVICES: "lambda,cognito-idp"
+          DEBUG: "1"
+          DATA_DIR: "/tmp/localstack/data"
+
+    steps:
+      - name: Checkout Repositório
+        uses: actions/checkout@v3
+
+      - name: Configurar Docker
+        run: |
+          docker run -d --rm -p 4566:4566 -p 4510-4559:4510-4559 localstack/localstack
+
+      - name: Instalar Dependências
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y unzip
+
+      - name: Instalar Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.5.0
+
+      - name: Inicializar Terraform
+        working-directory: ./infrastructure
+        run: |
+          terraform init
+
+      - name: Aplicar Terraform
+        working-directory: ./infrastructure
+        run: |
+          terraform apply -auto-approve
+
+      - name: Instalar AWS CLI
+        run: |
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          unzip awscliv2.zip
+          sudo ./aws/install
+
+      - name: Deploy Lambda
+        run: |
+          zip lambda.zip lambda/lambda_function.py
+          aws --endpoint-url=http://localhost:4566 lambda create-function \
+            --function-name check-user-by-cpf \
+            --runtime python3.9 \
+            --role arn:aws:iam::000000000000:role/lambda-ex \
+            --handler lambda_function.lambda_handler \
+            --zip-file fileb://lambda.zip

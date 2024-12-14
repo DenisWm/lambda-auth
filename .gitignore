@@ -20,7 +20,8 @@
 *.DS_Store
 .AppleDouble
 .LSOverride
-
+/infrastructure/.terraform*
+/infrastructure/terraform*
 # Icon must end with two \r
 Icon
 
