@@ -44,6 +44,10 @@ jobs:
         working-directory: ./infrastructure
         run: |
           terraform apply -auto-approve
+      - name: Set up AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: us-east-1
 
       - name: Deploy Lambda
         run: |
