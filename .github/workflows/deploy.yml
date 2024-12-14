@@ -19,7 +19,7 @@ jobs:
           SERVICES: "lambda,cognito-idp,iam"
           DEBUG: "1"
           DATA_DIR: "/tmp/localstack/data"
-          LOCALSTACK_AUTH_TOKEN: ${{ secrets.LOCALSTACK_AUTH_TOKEN }}
+          LOCALSTACK_AUTH_TOKEN: ${{secrets.LOCALSTACK_AUTH_TOKEN}}
 
     steps:
       - name: Checkout Repositório
