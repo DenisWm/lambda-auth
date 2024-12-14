@@ -9,3 +9,7 @@ variable "user_pool_name" {
 variable "user_pool_client_name" {
   default = "UserPoolClient"
 }
+
+variable "user_pool_client_names" {
+  default = "UserPoolClients"
+}
