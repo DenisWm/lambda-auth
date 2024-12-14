@@ -24,10 +24,6 @@ jobs:
       - name: Checkout Repositório
         uses: actions/checkout@v3
 
-      - name: Configurar Docker
-        run: |
-          docker run -d --rm -p 4566:4566 -p 4510-4559:4510-4559 localstack/localstack
-
       - name: Instalar Dependências
         run: |
           sudo apt-get update
