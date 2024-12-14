@@ -19,14 +19,14 @@ resource "aws_cognito_user_pool" "user_pool" {
   schema {
     attribute_data_type = "String"
     name                = "email"
-    required            = true
+    required            = false
     mutable             = false
   }
 
   schema {
     attribute_data_type = "String"
     name                = "cpf"
-    required            = true
+    required            = false
     mutable             = false
   }
 
