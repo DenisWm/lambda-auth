@@ -45,8 +45,14 @@ jobs:
         run: |
           terraform apply -auto-approve
 
-    
-      - name: Deploy Lambda
+      - name: Configurar Credenciais AWS
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: "test"  # LocalStack usa essas credenciais fictícias
+          aws-secret-access-key: "test"  # LocalStack usa essas credenciais fictícias
+          aws-region: us-east-1
+          aws-session-token: "null"  # Remover token ou passar "null"
+
         run: |
           zip lambda.zip lambda/lambda_function.py
           aws --endpoint-url=http://localhost:4566 lambda create-function \
@@ -54,5 +60,5 @@ jobs:
             --runtime python3.9 \
             --role arn:aws:iam::000000000000:role/lambda-ex \
             --handler lambda_function.lambda_handler \
-            --zip-file fileb://lambda.zip \
+            --zip-file fileb://lambda.zip
             --region us-west-1
