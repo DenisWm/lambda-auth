@@ -51,7 +51,6 @@ jobs:
           aws-access-key-id: "test"
           aws-secret-access-key: "test"
           aws-region: us-east-1
-          aws-session-token: "null"
 
       - name: Deploy Lambda
         run: |
