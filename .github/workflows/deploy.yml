@@ -68,4 +68,3 @@ jobs:
         run: |
           curl -X POST http://localhost:4566/restapis/$(aws apigateway get-rest-apis --endpoint-url=http://localhost:4566 \
             --query "items[0].id" --output text)/prod/_user_request_/user-check   -H "Content-Type: application/json"   -d '{"cpf": "12345678900"}'
-
