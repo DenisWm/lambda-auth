@@ -64,15 +64,8 @@ jobs:
           --username "12345678900" \
           --user-attributes Name=email,Value=teste@example.com
 
-      - name: Invocar a Lambda
+      - name: Buscar usuário com a a Lambda através do API GATEWAY
         run: |
-          aws --endpoint-url=http://localhost:4566 lambda invoke \
-            --function-name check-user-by-cpf \
-            --payload ewogICAgImNwZiI6ICIxMjM0NTY3ODkwMCIKICAgIAp9 \
-            output.json
-          cat output.json
-      - name: Buscar usuário com a API GATEWAY
-        run: |
-          curl -X POST http://localhost:4566/restapis/$(aws apigateway get-rest-apis --endpoint-url=http://localhost:4566 --query "items[0].id" --output text)/ /
-          prod/_user_request_/user-check   -H "Content-Type: application/json"   -d '{"cpf": "12345678900"}'
-          
+          curl -X POST http://localhost:4566/restapis/$(aws apigateway get-rest-apis --endpoint-url=http://localhost:4566 \
+            --query "items[0].id" --output text)/prod/_user_request_/user-check   -H "Content-Type: application/json"   -d '{"cpf": "12345678900"}'
+
