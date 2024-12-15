@@ -16,13 +16,14 @@ jobs:
           - 4566:4566
           - 4510-4559:4510-4559
         env:
-          SERVICES: "cognito-idp,sqs,lambda,iam"
+          SERVICES: "cognito-idp,sqs,lambda,iam,apigateway"
           DEBUG: "1"
           DATA_DIR: "/tmp/localstack/data"
           LOCALSTACK_AUTH_TOKEN: ${{ secrets.LOCALSTACK_AUTH_TOKEN }}
           AWS_DEFAULT_REGION: us-east-1
           AWS_ACCESS_KEY_ID: test
           AWS_SECRET_ACCESS_KEY: test
+          LAMBDA_EXECUTOR: docker
 
     env: 
         AWS_ACCESS_KEY_ID: "test"
