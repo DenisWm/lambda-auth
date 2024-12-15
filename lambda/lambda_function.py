@@ -1,15 +1,31 @@
+import logging
+import os
 import boto3
 import json
-import os
+
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
 
 def lambda_handler(event, context):
-    """Função principal que será invocada pela AWS Lambda"""
-    cpf = event.get('cpf')
+    logger.info('Iniciando a execução da Lambda...')
+    logger.info(f'Evento recebido: {event}')
 
-    if not cpf:
+    try:
+        body = json.loads(event.get('body', '{}'))
+    except json.JSONDecodeError as e:
+        logger.error(f'Erro ao decodificar o body: {str(e)}')
         return {
             'statusCode': 400,
-            'body': json.dumps('CPF não fornecido.')
+            'body': 'Formato do body inválido.'
+        }
+
+    cpf = body.get('cpf')
+
+    if not cpf:
+        logger.error('CPF não fornecido')
+        return {
+            'statusCode': 400,
+            'body': 'CPF não fornecido.'
         }
 
     client = boto3.client(
@@ -21,24 +37,39 @@ def lambda_handler(event, context):
     )
 
     try:
+        logger.info(f'Buscando usuário com CPF: {cpf}')
         response = client.list_users(
             UserPoolId=os.environ.get('USER_POOL_ID'), 
             Filter=f'username = "{cpf}"'
         )
-
+        logger.info(f'Resposta do Cognito: {response}')
+        
         if response['Users']:
+            user = response['Users'][0]  # Pega o primeiro usuário encontrado
+            email = next((attr['Value'] for attr in user['Attributes'] if attr['Name'] == 'email'), 'Email não encontrado')
+
+            logger.info(f'Usuário encontrado: CPF={cpf}, Email={email}')
+
             return {
                 'statusCode': 200,
-                'body': json.dumps(f'Usuário com CPF {cpf} foi encontrado.')
+                'body': json.dumps({
+                    'message': 'Usuário encontrado',
+                    'cpf': cpf,
+                    'email': email
+                })
             }
         else:
+            logger.info(f'Usuário com CPF {cpf} não foi encontrado.')
             return {
                 'statusCode': 404,
-                'body': json.dumps(f'Usuário com CPF {cpf} não foi encontrado.')
+                'body': json.dumps({
+                    'message': 'Usuário não encontrado',
+                    'cpf': cpf
+                })
             }
-
     except Exception as e:
+        logger.error(f'Ocorreu um erro: {str(e)}')
         return {
             'statusCode': 500,
-            'body': json.dumps(f'Ocorreu um erro: {str(e)}')
+            'body': f'Ocorreu um erro: {str(e)}'
         }
