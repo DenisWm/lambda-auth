@@ -33,7 +33,7 @@ def lambda_handler(event, context):
         aws_access_key_id='test', 
         aws_secret_access_key='test', 
         region_name='us-east-1', 
-        endpoint_url='http://localhost:4566'
+        endpoint_url='http://localstack:4566'
     )
 
     try:
