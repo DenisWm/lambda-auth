@@ -40,10 +40,10 @@ jobs:
           LAMBDA_EXECUTOR: docker
         volumes:
           - "/var/run/docker.sock:/var/run/docker.sock"
-# Descrição: Configura o LocalStack como um serviço dentro de um container Docker.
-# Imagem: Utiliza a imagem localstack/localstack-pro:latest.
-# Portas: Mapeia as portas necessárias para os serviços do LocalStack.
-# Variáveis de ambiente: Define a região da AWS, as credenciais para simulação no LocalStack, e os serviços que serão inicializados, como Cognito, Lambda, SQS, IAM e API Gateway.
+- Descrição: Configura o LocalStack como um serviço dentro de um container Docker.
+- Imagem: Utiliza a imagem localstack/localstack-pro:latest.
+- Portas: Mapeia as portas necessárias para os serviços do LocalStack.
+- Variáveis de ambiente: Define a região da AWS, as credenciais para simulação no LocalStack, e os serviços que serão inicializados, como Cognito, Lambda, SQS, IAM e API Gateway.
 # Volumes: Monta o docker.sock para permitir que o LocalStack execute containers Docker para funções Lambda.
 
 # 4. Configuração das Variáveis de Ambiente Globais
@@ -52,7 +52,7 @@ jobs:
       AWS_SECRET_ACCESS_KEY: "test"
       AWS_REGION: "us-east-1"
       AWS_DEFAULT_REGION: "us-east-1"
-# Descrição: Define as variáveis de ambiente globais, como credenciais da AWS e a região que será utilizada durante a execução do workflow.
+- - Descrição: Define as variáveis de ambiente globais, como credenciais da AWS e a região que será utilizada durante a execução do workflow.
 
 # 5. Passos do Workflow
 
@@ -60,35 +60,35 @@ jobs:
     steps:
       - name: Checkout Repositório
         uses: actions/checkout@v3
-# Descrição: Realiza o checkout do repositório no qual o workflow está sendo executado.
+Descrição: Realiza o checkout do repositório no qual o workflow está sendo executado.
 
 # 5.2. Instalação das Dependências
       - name: Instalar Dependências
         run: |
           sudo apt-get update
           sudo apt-get install -y unzip
-# Descrição: Atualiza os pacotes do sistema e instala a ferramenta unzip, necessária para lidar com arquivos compactados, especialmente ao lidar com funções Lambda.
+- Descrição: Atualiza os pacotes do sistema e instala a ferramenta unzip, necessária para lidar com arquivos compactados, especialmente ao lidar com funções Lambda.
 
 # 5.3. Instalação do Terraform
       - name: Instalar Terraform
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.5.0
-# Descrição: Instala a versão do Terraform (1.5.0) utilizando a ação oficial do HashiCorp.
+- Descrição: Instala a versão do Terraform (1.5.0) utilizando a ação oficial do HashiCorp.
 
 # 5.4. Inicialização do Terraform
       - name: Inicializar Terraform
         working-directory: ./infrastructure
         run: |
           terraform init
-# Descrição: Inicializa o Terraform no diretório ./infrastructure, onde estão localizados os arquivos de configuração da infraestrutura.
+- Descrição: Inicializa o Terraform no diretório ./infrastructure, onde estão localizados os arquivos de configuração da infraestrutura.
 
 # 5.5. Aplicação do Terraform
       - name: Aplicar Terraform
         working-directory: ./infrastructure
         run: |
           terraform apply -auto-approve
-# Descrição: Aplica as configurações do Terraform, criando ou atualizando os recursos definidos, como Lambda, API Gateway e Cognito.
+- Descrição: Aplica as configurações do Terraform, criando ou atualizando os recursos definidos, como Lambda, API Gateway e Cognito.
 
 # 5.6. Criação de Usuário no Cognito
       - name: Criar Usuário
@@ -97,11 +97,11 @@ jobs:
           --user-pool-id $(aws --endpoint-url=http://localhost:4566 cognito-idp list-user-pools --max-results 10 --query "UserPools[?Name=='localstack-user-pool'].Id" --output text) \
           --username "12345678900" \
           --user-attributes Name=email,Value=teste@example.com
-# Descrição: Utiliza a AWS CLI para criar um usuário no Cognito. O comando busca o ID do Pool de Usuários do LocalStack e cria um usuário com o CPF 12345678900 e o e-mail teste@example.com.
+- Descrição: Utiliza a AWS CLI para criar um usuário no Cognito. O comando busca o ID do Pool de Usuários do LocalStack e cria um usuário com o CPF 12345678900 e o e-mail teste@example.com.
 
 # 5.7. Chamada para Lambda via API Gateway
       - name: Buscar usuário com a Lambda através do API GATEWAY
         run: |
           curl -X POST http://localhost:4566/restapis/$(aws apigateway get-rest-apis --endpoint-url=http://localhost:4566 \
             --query "items[0].id" --output text)/prod/_user_request_/user-check -H "Content-Type: application/json" -d '{"cpf": "12345678900"}'
-# Descrição: Realiza uma chamada HTTP utilizando curl para invocar uma função Lambda via API Gateway. A função Lambda será acionada para buscar o usuário com o CPF fornecido.
+- Descrição: Realiza uma chamada HTTP utilizando curl para invocar uma função Lambda via API Gateway. A função Lambda será acionada para buscar o usuário com o CPF fornecido.
