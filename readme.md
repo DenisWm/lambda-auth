@@ -6,6 +6,10 @@ Este arquivo `deploy.yml` define um workflow de CI/CD automatizado que é execut
 
 Este workflow é acionado sempre que há um push para a branch `master`. Ele inicializa os serviços simulados da AWS, como Cognito, Lambda e API Gateway, utilizando o LocalStack. Além disso, o workflow configura a infraestrutura com o Terraform e realiza algumas operações para testar a interação com esses serviços, como a criação de um usuário no Cognito e a invocação de funções Lambda via API Gateway.
 
+## Objetivo
+Implementar um API Gateway e um function serverless para autenticar o cliente com base no CPF 
+
+
 ## Estrutura do Arquivo `deploy.yml`
 
 
