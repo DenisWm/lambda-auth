@@ -45,7 +45,7 @@ def lambda_handler(event, context):
         logger.info(f'Resposta do Cognito: {response}')
         
         if response['Users']:
-            user = response['Users'][0]  # Pega o primeiro usuário encontrado
+            user = response['Users'][0]
             email = next((attr['Value'] for attr in user['Attributes'] if attr['Name'] == 'email'), 'Email não encontrado')
 
             logger.info(f'Usuário encontrado: CPF={cpf}, Email={email}')
