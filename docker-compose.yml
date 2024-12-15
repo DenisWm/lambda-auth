@@ -6,8 +6,11 @@ services:
       - "4566:4566"
       - "4510-4559:4510-4559"
     environment:
-      - SERVICES=cognito-idp,sqs,lambda,iam
+      - SERVICES=lambda,apigateway,iam,cognito-idp
       - DEFAULT_REGION=us-east-1
       - AWS_ACCESS_KEY_ID=test
       - AWS_SECRET_ACCESS_KEY=test
       - LOCALSTACK_AUTH_TOKEN=ls-ZoquxOxE-tOxA-9537-hOgu-9719wiSa9859
+      - LAMBDA_EXECUTOR=docker
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
